@@ -1,0 +1,19 @@
+name: Build exe
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          architecture: 'x86'
+      - run: pip install openpyxl pyinstaller==5.13.2
+      - run: pyinstaller --onefile --windowed notes_app.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notes_app
+          path: dist/notes_app.exe
